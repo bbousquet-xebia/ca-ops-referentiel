@@ -1,16 +1,14 @@
 apiVersion: build.knative.dev/v1alpha1
 kind: Build
 metadata:
-  name: ca-ops-referentiel
+  name: ca-ops-referentiel-build
 spec:
   serviceAccountName: knative-build
   source:
     git:
-      url: https://source.developers.google.com/p/coding-archi-ops/r/ca-ops-referentiel
+      url: https://github.com/bbousquet-xebia/ca-ops-referentiel.git
       revision: master
   steps:
   - name: build-and-push
-    image: gcr.io/kaniko-project/executor:v0.1.0
-    args:
-    - --dockerfile=/workspace/Dockerfile
-    - --destination=gcr.io/ca-ops/ca-ops-referentiel
+    image: gcr.io/cloud-builders/mvn
+    args: ["compile", "jib:build", "-Dimage=gcr.io/coding-archi-ops/ca-ops-referentiel"]
